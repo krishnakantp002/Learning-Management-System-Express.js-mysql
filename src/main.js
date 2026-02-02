@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require ('./config/db.js')
 const userRouter = require('./routes/user.routes.js')
 const createUserTable = require('./data/createUsertable.js')
+const createCourseTable = require('./data/createCourseTable.js')
 const app = express()
 
 app.use(express.json())
@@ -10,6 +11,7 @@ app.use(express.urlencoded({extended:true}))
 app.use('/api',userRouter)
 
 createUserTable()
+createCourseTable()
 
 PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{

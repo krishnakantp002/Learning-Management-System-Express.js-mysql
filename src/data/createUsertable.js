@@ -11,7 +11,7 @@ const queryText = `
     updated_at timestamp default current_timestamp 
     on update current_timestamp
 
-);
+)Engine=InnoDB;
 `
 
 

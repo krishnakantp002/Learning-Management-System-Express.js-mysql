@@ -5,18 +5,22 @@ const courseRouter = require('./routes/course.routes.js')
 const createUserTable = require('./data/createUsertable.js')
 const createCourseTable = require('./data/createCourseTable.js')
 const loggingReq = require('./middlewares/loggingReq.js')
+const passport = require('./middlewares/auth.passport.js')
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 app.use(loggingReq)
+app.use(passport.initialize())
 
+const auth = passport.authenticate('local',{session:false})
 app.use('/api/v1',userRouter)
-app.use('/api/v1',courseRouter)
+app.use('/api/v1',auth,courseRouter)
 
-createUserTable()
+createUserTable() 
 createCourseTable()
+
 
 PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{

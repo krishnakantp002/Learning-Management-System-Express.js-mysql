@@ -39,7 +39,7 @@ exports.createCourse = async (req,res) => {
         const {title,description,instructor_id,is_published} = req.body;
         const result = await courseModel.createCourse(title,description,instructor_id,is_published)
         res.status(201).json({
-            message:'course created by ' + instructor_id,
+            message:'course created successfully by ' + instructor_id,
             result : result
         })
     } catch (error) {

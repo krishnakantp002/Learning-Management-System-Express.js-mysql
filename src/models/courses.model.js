@@ -21,11 +21,11 @@ exports.getCourseById = async (course_id) => {
     }
 }
 
-exports.createCourse = async (course_id,title,description,instrutor_id,is_published) => {
+exports.createCourse = async (title,description,instructor_id,is_published) => {
     try {
     const [result] = await pool.query(
-        `insert into courses (course_id,title,description,instructor_id,is_published)
-         values (?,?,?,?,?) `[course_id,title,description,instrutor_id,is_published]
+        `insert into courses (title,description,instructor_id,is_published)
+         values (?,?,?,?) `,[title,description,instructor_id,is_published]
     )
     return result        
     } catch (error) {

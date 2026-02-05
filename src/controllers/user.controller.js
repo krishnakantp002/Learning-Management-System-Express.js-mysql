@@ -1,4 +1,5 @@
 const userModel = require('../models/users.model.js')
+const {generateToken} = require('../middlewares/jwt.auth.js')
 
 exports.createUser = async(req,res) => {
     try {
@@ -9,9 +10,15 @@ exports.createUser = async(req,res) => {
             })
         }
         const result = await userModel.createUser(username,email,password,role)
+        const payload = ({
+            id : result.id,
+            username : username
+        })
+        const token = generateToken(payload)
         res.status(201).json({
             message : "user created",
-            result : result
+            result : result,
+            token : token
         })
     } catch (error) {
         res.status(401).json({

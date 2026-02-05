@@ -24,7 +24,7 @@ exports.getCourseById = async (req,res) => {
             })
         }
         res.status(200).json({
-        message: "All courses fetched",
+        message: "course fetched by course_id",
         result:result
     })
     } catch (error) {

@@ -1,4 +1,5 @@
 const pool = require ('../config/db.js')
+const {hashPass} = require('../utils/hashedPass.js')
 
 exports.getAllUsers = async () => {
     try {
@@ -20,10 +21,14 @@ exports.getUserById= async(id) => {
 
 exports.createUser = async(username,email,password,role) =>{
     try {
+     const hashedPass = await hashPass(password)
      const [result] = await pool.query(
         'insert into users (username,email,password,role) values (?,?,?,?);',
-            [username,email,password,role])
-     return result;
+            [username,email,hashedPass,role])
+    const [user] = await pool.query(
+        'select * from users where id =?',[result.insertId]
+    )
+     return user[0];
     } catch (error) {
      throw error
     }
@@ -31,9 +36,10 @@ exports.createUser = async(username,email,password,role) =>{
 
 exports.updateUser = async(id,username,email,password,role) => {
     try {
+        const hashedPass = await hashPass(password)
         const [result] = await pool.query (
             'update users set username=?,email=?,password=?,role=? where id=?;',
-        [username,email,password,role,id])
+        [username,email,hashedPass,role,id])
         return result;
     } catch (error) {
         throw error

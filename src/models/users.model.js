@@ -21,10 +21,9 @@ exports.getUserById= async(id) => {
 
 exports.createUser = async(username,email,password,role) =>{
     try {
-     const hashedPass = await hashPass(password)
      const [result] = await pool.query(
         'insert into users (username,email,password,role) values (?,?,?,?);',
-            [username,email,hashedPass,role])
+            [username,email,password,role])
     const [user] = await pool.query(
         'select * from users where id =?',[result.insertId]
     )
@@ -36,10 +35,9 @@ exports.createUser = async(username,email,password,role) =>{
 
 exports.updateUser = async(id,username,email,password,role) => {
     try {
-        const hashedPass = await hashPass(password)
         const [result] = await pool.query (
             'update users set username=?,email=?,password=?,role=? where id=?;',
-        [username,email,hashedPass,role,id])
+        [username,email,password,role,id])
         return result;
     } catch (error) {
         throw error
